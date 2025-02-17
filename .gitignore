@@ -1,0 +1,6 @@
+.ipynb_checkpoints/
+logs/
+DAG-GNN/
+predG
+trueG
+.DS_Store
