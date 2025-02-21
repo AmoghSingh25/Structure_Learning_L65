@@ -1,6 +1,6 @@
 export DATA_TYPE=real
 export DATA_FILENAME=asia
-export DATA_DIR=data/
+export DATA_DIR=BIFs
 export DATA_SAMPLE_SIZE=5000 #n
 export DATA_VARIABLE_SIZE=10 
 export GRAPH_TYPE=erdos-renyi 

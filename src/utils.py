@@ -424,7 +424,7 @@ def load_data(args, batch_size=1000, suffix='', debug = False):
             X = all_data['1000']['1']
     
     elif args.data_type == 'real':
-        dataset = bn.import_DAG("BIFs/" + args.data_filename + ".bif")
+        dataset = bn.import_DAG(f"{args.data_dir}/{args.data_filename}.bif")
         X = np.expand_dims(bn.sampling(dataset, n=args.data_sample_size).values, axis=2)
         G = nx.DiGraph(dataset['adjmat'].values.astype(int))
         args.data_variable_size = len(dataset['adjmat'])
