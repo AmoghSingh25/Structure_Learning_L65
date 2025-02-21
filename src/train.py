@@ -163,7 +163,7 @@ else:
 # ================================================
 # get data: experiments = {synthetic SEM, ALARM}
 # ================================================
-train_loader, valid_loader, test_loader, ground_truth_G = load_data( args, args.batch_size, args.suffix)
+train_loader, valid_loader, test_loader, ground_truth_G = load_data(args, args.batch_size, args.suffix)
 
 #===================================
 # load modules

@@ -1,14 +1,14 @@
-export DATA_TYPE=synthetic
-export DATA_FILENAME=alarm
+export DATA_TYPE=real
+export DATA_FILENAME=asia
 export DATA_DIR=data/
-export DATA_SAMPLE_SIZE=5000
-export DATA_VARIABLE_SIZE=10
-export GRAPH_TYPE=erdos-renyi
-export GRAPH_DEGREE=2
-export GRAPH_SEM_TYPE=linear-gauss
-export GRAPH_LINEAR_TYPE=nonlinear_2
+export DATA_SAMPLE_SIZE=5000 #n
+export DATA_VARIABLE_SIZE=10 
+export GRAPH_TYPE=erdos-renyi 
+export GRAPH_DEGREE=2 
+export GRAPH_SEM_TYPE=linear-gauss #sem_type
+export GRAPH_LINEAR_TYPE=nonlinear_2 #linear_type
 export EDGE_TYPES=2
-export X_DIMS=1
+export X_DIMS=1 #x_dims
 export Z_DIMS=1
 
 export OPTIMIZER=Adam

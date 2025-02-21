@@ -17,6 +17,7 @@ import glob
 import re
 import pickle
 import math
+import bnlearn as bn
 from torch.optim.adam import Adam
 
 # data generating functions
@@ -410,6 +411,7 @@ def load_data(args, batch_size=1000, suffix='', debug = False):
         # generate data
         G = simulate_random_dag(d, degree, graph_type)
         X = simulate_sem(G, n, x_dims, sem_type, linear_type)
+        print(X.shape)
 
     elif args.data_type == 'discrete':
         # get benchmark discrete data
@@ -420,7 +422,12 @@ def load_data(args, batch_size=1000, suffix='', debug = False):
             all_data, graph = read_BNrep(args)
             G = nx.DiGraph(graph)
             X = all_data['1000']['1']
-
+    
+    elif args.data_type == 'real':
+        dataset = bn.import_DAG("BIFs/" + args.data_filename + ".bif")
+        X = np.expand_dims(bn.sampling(dataset, n=args.data_sample_size).values, axis=2)
+        G = nx.DiGraph(dataset['adjmat'].values.astype(int))
+        args.data_variable_size = len(dataset['adjmat'])
 
     feat_train = torch.FloatTensor(X)
     feat_valid = torch.FloatTensor(X)
