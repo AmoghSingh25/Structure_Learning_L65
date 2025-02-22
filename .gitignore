@@ -4,3 +4,4 @@ DAG-GNN/
 predG
 trueG
 .DS_Store
+__pycache__/
