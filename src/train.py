@@ -22,6 +22,8 @@ import math
 # import numpy as np
 from utils import *
 from modules import *
+import sys
+
 
 parser = argparse.ArgumentParser()
 
@@ -430,6 +432,7 @@ lambda_A = args.lambda_A
 h_A_new = torch.tensor(1.)
 h_tol = args.h_tol
 k_max_iter = int(args.k_max_iter)
+print('k_max_iter', k_max_iter)
 h_A_old = np.inf
 
 try:
@@ -546,13 +549,13 @@ except KeyboardInterrupt:
     print('threshold 0.3, Accuracy: fdr', fdr, ' tpr ', tpr, ' fpr ', fpr, 'shd', shd, 'nnz', nnz)
 
 
-f = open('trueG', 'w')
+f = open(args.data_filename + '_trueG', 'w')
 matG = np.matrix(nx.to_numpy_array(ground_truth_G))
 for line in matG:
     np.savetxt(f, line, fmt='%.5f')
 f.closed
 
-f1 = open('predG', 'w')
+f1 = open(args.data_filename + '_predG', 'w')
 matG1 = np.matrix(origin_A.data.clone().numpy())
 for line in matG1:
     np.savetxt(f1, line, fmt='%.5f')
