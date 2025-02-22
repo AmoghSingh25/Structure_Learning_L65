@@ -1,0 +1,13 @@
+,Dataset,Thresholds,Correlation Score,SHD
+0,asia,0.1,0,18
+1,asia,0.2,0.181818182,16
+2,asia,0.3,0.181818182,13
+3,cancer,0.1,0.8,3
+4,cancer,0.2,0.8,3
+5,cancer,0.3,0.75,4
+6,child,0.1,0,52
+7,child,0.2,0.325203252,32
+8,child,0.3,0.294117647,25
+9,insurance,0.1,0,106
+10,insurance,0.2,0,88
+11,insurance,0.3,0.052631579,82

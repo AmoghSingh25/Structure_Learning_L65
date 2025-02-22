@@ -27,7 +27,7 @@ export LR=3e-3
 export ENCODER_HIDDEN=64
 export DECODER_HIDDEN=64
 export TEMP=0.5
-export K_MAX_ITER=100
+export K_MAX_ITER=5
 
 export ENCODER=mlp
 export DECODER=mlp
