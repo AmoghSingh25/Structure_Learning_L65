@@ -5,3 +5,7 @@ predG
 trueG
 .DS_Store
 __pycache__/
+asia.csv
+insurance.csv
+cancer.csv
+child.csv
