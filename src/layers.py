@@ -129,16 +129,14 @@ class RNF_GATConv(nn.Module):
             src_indices, dst_indices = graph.edges()
 
             projected_pre_attention = self.fc_project_attn(self.leaky_relu(th.cat([el[src_indices], er[dst_indices]], dim=2)))
-            graph.edata["a"] = th.sum(self.attn_drop(edge_softmax(graph, projected_pre_attention)), dim=1)
+            a = th.sum(self.attn_drop(edge_softmax(graph, projected_pre_attention)), dim=1)
 
             #### Calculating tanh coefficients ####
             feat_src_tanh = feat_dst_tanh = self.fc_tanh(h_src)
-            graph.edata['tanh'] = th.tanh(10000*self.fc_project_tanh(th.cat([feat_src_tanh[src_indices], feat_dst_tanh[dst_indices]], dim=1)))
-
-            # print(graph.edata['tanh'])
+            tanh = th.tanh(10000*self.fc_project_tanh(th.cat([feat_src_tanh[src_indices], feat_dst_tanh[dst_indices]], dim=1)))
 
             #### Calculating final coefficients ####
-            graph.edata['coef'] = graph.edata['a'] * graph.edata['tanh']
+            graph.edata['coef'] = a * tanh
 
             #### Assigning original features ####
             graph.srcdata.update({"upd_ft": target})
@@ -165,6 +163,6 @@ class RNF_GATConv(nn.Module):
                 rst = self.activation(rst)
 
             if get_attention:
-                return rst, graph.edata["a"]
+                return rst, a
             else:
                 return rst
