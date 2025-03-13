@@ -6,6 +6,8 @@ import math
 from torch.autograd import Variable
 from utils import my_softmax, get_offdiag_indices, gumbel_softmax, preprocess_adj, preprocess_adj_new, preprocess_adj_new1, gauss_sample_z, my_normalize
 
+from layers import RNF_GATConv
+
 _EPS = 1e-10
 
 
@@ -346,3 +348,21 @@ class SEMDecoder(nn.Module):
 
         return mat_z, out-Wa, adj_A_tilt
 
+class GAT_RNF(nn.Module):
+    def __init__(self, num_nodes, rnf_dim, rnf_intermediate_dim, rnf_init_method, num_heads):
+        super(GAT_RNF, self).__init__()
+
+        if rnf_init_method=='xavier_uniform':
+            self.rnf_features = nn.Parameter(nn.init.xavier_uniform_(torch.zeros(num_nodes, rnf_dim)))
+        elif rnf_init_method=='xavier_normal':
+            self.rnf_features = nn.Parameter(nn.init.xavier_normal_(torch.zeros(num_nodes, rnf_dim)))
+        elif rnf_init_method=='kaiming_uniform':
+            self.rnf_features = nn.Parameter(nn.init.kaiming_uniform_(torch.zeros(num_nodes, rnf_dim)))
+        elif rnf_init_method=='kaiming_normal':
+            self.rnf_features = nn.Parameter(nn.init.kaiming_normal_(torch.zeros(num_nodes, rnf_dim)))
+        
+        self.gatconv = RNF_GATConv(in_rnf_feats=rnf_dim, intermediate_rnf_feats=rnf_intermediate_dim, num_heads=num_heads, bias=False)
+
+    def forward(self, g, x):
+        out = self.gatconv(g, self.rnf_features, x)
+        return torch.mean(out, dim=1)
