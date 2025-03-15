@@ -353,18 +353,24 @@ class GAT_RNF(nn.Module):
         super(GAT_RNF, self).__init__()
 
         if rnf_init_method=='xavier_uniform':
-            self.rnf_features = nn.Parameter(nn.init.xavier_uniform_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_mean = nn.Parameter(nn.init.xavier_uniform_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_std = nn.Parameter(nn.init.xavier_uniform_(torch.zeros(num_nodes, rnf_dim)))
         elif rnf_init_method=='xavier_normal':
-            self.rnf_features = nn.Parameter(nn.init.xavier_normal_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_mean = nn.Parameter(nn.init.xavier_normal_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_std = nn.Parameter(nn.init.xavier_normal_(torch.zeros(num_nodes, rnf_dim)))
         elif rnf_init_method=='kaiming_uniform':
-            self.rnf_features = nn.Parameter(nn.init.kaiming_uniform_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_mean = nn.Parameter(nn.init.kaiming_uniform_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_std = nn.Parameter(nn.init.kaiming_uniform_(torch.zeros(num_nodes, rnf_dim)))
         elif rnf_init_method=='kaiming_normal':
-            self.rnf_features = nn.Parameter(nn.init.kaiming_normal_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_mean = nn.Parameter(nn.init.kaiming_normal_(torch.zeros(num_nodes, rnf_dim)))
+            self.rnf_std = nn.Parameter(nn.init.kaiming_normal_(torch.zeros(num_nodes, rnf_dim)))
         
         self.gatconv = RNF_GATConv(in_rnf_feats=rnf_dim, intermediate_rnf_feats=rnf_intermediate_dim, num_heads=num_heads, bias=False)
 
     def forward(self, g, x, get_attention=False):
-        out = self.gatconv(g, self.rnf_features, x, get_attention=get_attention)
+        dist = torch.distributions.Normal(self.rnf_mean, nn.functional.softplus(self.rnf_std) + 0.0001)
+        rnf_features = dist.rsample()
+        out = self.gatconv(g, rnf_features, x, get_attention=get_attention)
         if get_attention:
             return torch.mean(out[0], dim=1), out[1]
         else:
