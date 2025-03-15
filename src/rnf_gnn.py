@@ -80,3 +80,4 @@ loss_fn = nn.MSELoss()
 for epoch_id in range(1,args.num_epochs+1):
     print(f'Epoch {epoch_id}')
     train_epoch(loader, model, optimizer, loss_fn)
+torch.save(model.state_dict(), "saved_model/gat_rnf.pt")

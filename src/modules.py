@@ -363,6 +363,9 @@ class GAT_RNF(nn.Module):
         
         self.gatconv = RNF_GATConv(in_rnf_feats=rnf_dim, intermediate_rnf_feats=rnf_intermediate_dim, num_heads=num_heads, bias=False)
 
-    def forward(self, g, x):
-        out = self.gatconv(g, self.rnf_features, x)
-        return torch.mean(out, dim=1)
+    def forward(self, g, x, get_attention=False):
+        out = self.gatconv(g, self.rnf_features, x, get_attention=get_attention)
+        if get_attention:
+            return torch.mean(out[0], dim=1), out[1]
+        else:
+            return torch.mean(out, dim=1)
